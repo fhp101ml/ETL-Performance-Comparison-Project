@@ -1,0 +1,16 @@
+pandas
+numpy
+vaex
+pymongo
+pymysqlite
+mysql-connector-python
+sqlalchemy
+PyYAML
+psutil
+faker
+minio
+psycopg2
+langdetect
+googletrans
+lingua-language-detector
+deep_translator

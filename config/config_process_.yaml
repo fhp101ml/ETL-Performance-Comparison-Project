@@ -1,0 +1,25 @@
+etl:
+  library_type: pandas
+  source_type: csv
+  extractor_params:
+    file_path: '/home/ETL-PCP/data/experiments_dataset/experiment_data_25000.csv'
+    separator: ','
+  destination_type: file
+  loader_params:
+    output_path: '/home/ETL-PCP/data/experiments_dataset/experiment_data_25000_transformation_test'
+  transformations:
+    general: ['translate_attributes', 'simple']
+    attributes:
+      age: ['calculate_age']
+      price: ['apply_discount','moving_average']
+      name: ['capitalize_first_letter']
+metadata:
+  attributes: ['age', 'name', 'price']
+  types:
+    age: int
+    name: str
+    price: float
+  rules:
+    age: calculate_age
+    price: apply_discount
+    name: capitalize_first_letter

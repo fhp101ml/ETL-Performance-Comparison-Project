@@ -1,0 +1,20 @@
+etl:
+  library_type: pandas
+  source_type: csv
+  extractor_params:
+    file_path: '/content/drive/MyDrive/Python/data/output.csv'
+    separator: ','
+  destination_type: file
+  loader_params:
+    output_path: '/content/drive/MyDrive/Python/data/output2.csv'
+  transformations: ['edad']
+metadata:
+  attributes: ['edad', 'model', 'price']
+  types:
+    edad: int
+    model: str
+    price: float
+  rules:
+    edad: calculate_age
+    price: apply_discount
+    model: capitalize_first_letter

@@ -1,0 +1,22 @@
+version: '3.9'
+
+services:
+
+  python-ml:
+    build:
+      context: .
+      dockerfile: Dockerfile-python
+    volumes:
+      - .:/home/ETL-PCP/:rw
+#    depends_on:
+#      - minio
+#      - mlflow
+#    env_file:
+#      - .env
+    networks:
+      - bridge
+
+networks:
+  bridge:
+    driver: bridge
+

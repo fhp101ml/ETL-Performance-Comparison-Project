@@ -1,0 +1,45 @@
+etl_project/
+│
+├── config/
+│ └── config_exp.yaml
+│
+├── data/
+│ │ └── /sqlite_database
+│ └── (experiment data files will be saved here)
+│
+├── logs/
+│ └── (experiment results CSV files will be saved here)
+│
+├── results/
+│ └── (experiment results CSV files will be saved here)
+│
+├── src/
+│ ├── init.py
+│ ├── etl/
+│ │ ├── init.py
+│ │ └── utils/
+│ │ │ ├── database_connection.py
+│ │ │ ├── dataset_metadata.py
+│ │ │ └── config_manager.py
+│ │ ├── etl_factory_provider.py
+│ │ ├── etl_processor.py
+│ │ ├── pandas_etl_factory.py
+│ │ ├── vaex_etl_factory.py
+│ │ └── transformers/
+│ │ ├── init.py
+│ │ ├── pandas_transformers.py
+│ │ └── vaex_transformers.py
+│ ├── experiments/
+│ │ ├── init.py
+│ │ ├── etl_experiment.py
+│ │ └── generate_datasets.py
+│ ├── scripts/
+│ ├── utils/
+│ │ └── minio_manager.py
+│ └── main_*.py
+│
+├── .gitignore
+├── docker-compose.yml
+├── Dockerfile-python
+├── README.md
+└── projectStructure.txt

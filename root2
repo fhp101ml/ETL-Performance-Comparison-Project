@@ -1,0 +1,7 @@
+TZ=Europe/Madrid
+* * * * * echo "This is a test log entry each 2 minutes- to var/log/cron- $(date)" >> /var/log/cron.log 2>&1
+* * * * * echo "This is a test log entry each 2 minutes- 1- $(date)" >> /home/ETL-PCP/logs/cronLogs/test_log_$(date +\%Y_\%m_\%d).log 2>&1
+*/2 * * * * echo "This is a test log entry each 2 minutes- $(date)" >> /home/ETL-PCP/logs/cronLogs/test_log_$(date +\%Y_\%m_\%d).log 2>&1
+* * * * * /usr/local/bin/python /home/ETL-PCP/scripts/cronScripts/your_ml_script.py >> /var/log/cron.log 2>&1
+* * * * * /usr/local/bin/python /home/ETL-PCP/scripts/cronScripts/your_ml_script.py >> /home/rentACarMLOps/cronLogs/test_log_$(date +\%Y_\%m_\%d).log 2>&1
+*/2 * * * * /usr/local/bin/python /home/ETL-PCP/scripts/cronScripts/sqlScrypt2.py >> /var/log/cron.log 2>&1

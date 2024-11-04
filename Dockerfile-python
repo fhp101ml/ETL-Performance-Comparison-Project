@@ -1,0 +1,84 @@
+FROM python:3.8-slim
+
+#FROM ubuntu:latest
+
+#Se necesitó activar estas variables de entorno y el paquet tzdata para poder instalar y configurar el docker sin problema
+ENV TZ=Europe/Madrid
+ENV DEBIAN_FRONTEND=noninteractive
+
+#Configurando entorno
+RUN apt-get update
+RUN apt-get install -y cron tzdata rsyslog nano procps git libgomp1 build-essential libpq-dev
+RUN ldconfig
+
+COPY ./scr/scripts/entrypoint.sh /entrypoint.sh
+
+# # Set the working directory to /ETL-PCP
+WORKDIR /home/ETL-PCP/
+
+COPY . /home/ETL-PCP/
+COPY ./requirements.txt /home/ETL-PCP/
+
+# Configura PYTHONPATH para apuntar al directorio del proyecto y poder modularizar
+ENV PYTHONPATH=/home/ETL-PCP/
+
+#Scripts cron
+COPY ./scr/scripts/cronScripts/my_bash.sh /bin/my_bash.sh
+COPY ./scr/scripts/cronScripts/my_bash.sh /
+COPY ./scr/scripts/cronScripts/my_python.py /bin/my_python.py
+
+# RUN useradd cronsGesth
+RUN useradd -ms /bin/bash cronsGesth
+
+#USER cronsGesth
+
+#RUN echo 'export MINIO_ENDPOINT_URL=http://172.24.0.4:9000' >> /home/cronsGesth/.bashrc
+#RUN echo 'export MINIO_ACCESS_KEY_ID=minio_access_key' >> /home/cronsGesth/.bashrc
+#RUN echo 'export MINIO_SECRET_KEY=minio_secret_keyprint' >> /home/cronsGesth/.bashrc
+
+# USER root
+###############################################################################################
+
+COPY root2 /var/spool/cron/crontabs/cronsGesth
+#COPY root2 /home/MlflowRentACarCompany/root2
+RUN chown cronsGesth /var/spool/cron/crontabs/cronsGesth
+
+RUN chmod +x /bin/my_bash.sh
+RUN chmod +x /my_bash.sh
+RUN chmod +x /bin/my_python.py
+
+RUN chmod +x /home/ETL-PCP/scr/scripts/cronScripts/sqlScrypt.py
+RUN chmod +x /home/ETL-PCP/scr/scripts/cronScripts/sqlScrypt2.py
+RUN chmod +x /home/ETL-PCP/scr/scripts/cronScripts/my_python.py
+
+#RUN chmod +x /home/ETL-PCP/scr/scrypts/daemonS3.py
+
+RUN chown cronsGesth /home/ETL-PCP/scr/scripts/cronScripts/sqlScrypt2.py
+
+RUN #chown cronsGesth  /home/ETL-PCP/scr/scripts/daemonS3.py
+
+RUN #chown cronsGesth  /home/ETL-PCP/scr/scripts/updatingCron.py
+
+# # Create the log file to be able to run tail
+RUN touch /var/log/cron.log
+RUN chmod 777 /var/log/cron.log
+RUN chown cronsGesth /var/log/cron.log
+RUN chmod -R 777 /home/ETL-PCP/logs/cronLogs/
+RUN chown -R cronsGesth /home/ETL-PCP/logs/cronLogs/
+
+#Librerías python
+#RUN pip3 install --no-cache-dir --no-build-isolation scikit-learn
+RUN pip3 install --no-cache-dir --upgrade -r requirements.txt
+
+#Configuración demonio cron
+#RUN crontab -u cronsGesth /home/MlflowRentACarCompany/root2
+RUN crontab -u cronsGesth /var/spool/cron/crontabs/cronsGesth
+RUN chmod -R 777 /var/spool/cron/crontabs
+
+# Definir volumen para persistencia de datos
+VOLUME ["/home/ETL-PCP/"]
+
+RUN chmod 777 /entrypoint.sh
+
+#Ejecución docker
+ENTRYPOINT ["/entrypoint.sh"]

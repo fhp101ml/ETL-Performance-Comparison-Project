@@ -1,0 +1,23 @@
+etl:
+  library_type: pandas
+  source_type: database
+  extractor_params:
+    file_path: '/home/ETL-PCP/data/testing_data/experiments_dataset/experiment_data_transformed_75000.hdf5'
+    separator: ','
+    db_type: 'sqlite'
+    db_path: '/home/ETL-PCP/data/sqlite_database/load_testingProcess.db'
+    query: 'SELECT * FROM usuarios'
+  destination_type: file
+  loader_params:
+    output_path: '/home/ETL-PCP/data/testing_data/output_'
+  transformations: ['edad']
+metadata:
+  attributes: ['edad', 'model', 'price']
+  types:
+    edad: int
+    model: str
+    price: float
+  rules:
+    edad: calculate_age
+    price: apply_discount
+    model: capitalize_first_letter
