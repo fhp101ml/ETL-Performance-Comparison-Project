@@ -5,7 +5,8 @@ etl_project/
 │
 ├── data/
 │ │ └── /sqlite_database
-│ └── (experiment data files will be saved here)
+│ │ └── /experiment_dataset
+│ │ └── /testing_data
 │
 ├── logs/
 │ └── (experiment results CSV files will be saved here)

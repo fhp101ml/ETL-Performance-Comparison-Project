@@ -1,11 +1,22 @@
 # ETL-Performance-Comparison-Project
 # ETL Project
+This project is an ETL (Extract, Transform, Load) framework designed to facilitate data extraction, transformation, and loading processes using multiple libraries, specifically Pandas and Vaex. The framework is built to support flexibility and extensibility, incorporating several design patterns to improve modularity and scalability. Additionally, it includes functionality for performance measurement, allowing users to monitor the execution time and resource usage for each ETL operation.
+Key Features
 
-This project is an ETL (Extract, Transform, Load) framework designed to work with multiple data processing libraries, specifically Pandas and Vaex. The framework includes functionalities for data extraction, transformation, and loading, and it supports performance measurement of these operations.
+*Data Extraction*: Allows data retrieval from various sources, such as CSV files, databases, and APIs.
+*Data Transformation*: Provides multiple transformation strategies to clean, normalize, and preprocess data according to specific requirements.
+*Data Loading*: Supports saving processed data to different destinations, including databases and files.
+*Performance Measurement*: Tracks and logs the performance of each ETL step, facilitating optimization of data workflows.
 
+Design Patterns Used
+
+The framework leverages the following design patterns to enhance flexibility and maintainability:
+
+*Abstract Factory*: Enables the creation of library-specific ETL components (e.g., Extractor, Transformer, Loader) without tying the code to a particular implementation. This supports switching between Pandas and Vaex without significant code changes.
+*Singleton*: Ensures a single instance for performance tracking across the ETL operations, maintaining consistent performance metrics throughout the process.
+*Strategy*: Allows different transformation strategies to be applied to the data, making it easy to switch or add new transformation methods based on the requirements.
 ## Project structure 
 
- - `projectStructure.txt`
 
 ## Description of Directories and Files 
 
@@ -46,6 +57,9 @@ This project is an ETL (Extract, Transform, Load) framework designed to work wit
 
 ## Running the project
 After cloning the repository, create all the non existing directories like /logs and logs/cronlogs
+
+- Create database $python3 ~/scr/utils/sql_db_creation.py
+- Create experiments_datasets $python3 ~/scr/experiments/generate_datasets.py
 
 ## Testing the ETL process
 
