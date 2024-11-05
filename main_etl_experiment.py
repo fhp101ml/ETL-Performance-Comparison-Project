@@ -6,7 +6,7 @@ import sys
 
 def main():
 
-    file_sizes = [25000, 50000, 100000, 200000, 400000, 800000, 1600000, 3200000]
+    file_sizes = [25000, 50000, 100000, 200000, 400000, 800000, 1600000]
 
     config_manager = ConfigManager(config_path='/home/ETL-PCP/config/config_exp.yaml')
     experiment = ETLExperiment(config_manager=config_manager)
