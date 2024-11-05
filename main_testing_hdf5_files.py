@@ -1,7 +1,7 @@
 import vaex
 
 # Ruta del archivo HDF5 generado previamente
-file_path = '/home/ETL-PCP/data/experiments_dataset/experiment_data_25000_transformation_test.hdf5'
+file_path = '/home/ETL-PCP/data/experimentDatasets/experiment_data_25000_transformation_test.hdf5'
 
 
 try:

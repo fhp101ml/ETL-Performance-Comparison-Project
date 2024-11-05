@@ -2,7 +2,7 @@ import sqlite3
 from sqlite3 import IntegrityError
 
 # Conectar a la base de datos (se creará si no existe)
-database_path = '/home/ETL-PCP/data/sqlite_database/testing_functions.db'
+database_path = '/home/ETL-PCP/data/dataBaseTest/testing_functions.db'
 conn = sqlite3.connect(database_path)
 cursor = conn.cursor()
 

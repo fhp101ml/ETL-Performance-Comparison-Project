@@ -125,11 +125,11 @@ class ETLExperiment:
         transformations = self.etl_config['transformations']
         for size in file_sizes:
             self.config_manager.update_extractor_params({
-                'file_path': f'/home/ETL-PCP/data/experiments_dataset/experiment_data_{size}.csv',
+                'file_path': f'/home/ETL-PCP/data/experimentDatasets/experiment_data_{size}.csv',
                 'separator': ','
             })
             self.config_manager.update_loader_params({
-                'output_path': f'/home/ETL-PCP/data/experiments_dataset/experiment_data_transformed_{size}',
+                'output_path': f'/home/ETL-PCP/data/experimentDatasets/experiment_data_transformed_{size}',
             })
             # Medir rendimiento para Pandas
             pandas_results = self.measure_performance('pandas', transformations)

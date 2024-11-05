@@ -33,10 +33,10 @@ def main():
     source_type = "hdf5" # puede ser csv, hdf5, json, database
     query = "SELECT * FROM usuarios"
     extraction_params = {
-        "file_path": "/home/ETL-PCP/data/testing_data/output_testing.csv",
+        "file_path": "/home/ETL-PCP/data/testingData/output_testing.csv",
         "separator": ',',
         "db_type": "sqlite",  # Puede ser "sqlite", "mongodb", "mysql", "postgresql"
-        "db_path": "/home/ETL-PCP/data/sqlite_database/testing_functions.db",
+        "db_path": "/home/ETL-PCP/data/dataBaseTest/testing_functions.db",
         "query": query}  # Parámetros específicos de la conexión a la base de datos
 
 
@@ -49,9 +49,9 @@ def main():
     load_params_destination = {
          "db_type": "sqlite",
          "table_name": "usuarios",
-         "db_path": "/home/ETL-PCP/data/sqlite_database/testing_functions.db",
-         "database": "/home/ETL-PCP/data/sqlite_database/testing_functions.db",
-         "output_path": "/home/ETL-PCP/data/testing_data/output_testing_functions"
+         "db_path": "/home/ETL-PCP/data/dataBaseTest/testing_functions.db",
+         "database": "/home/ETL-PCP/data/dataBaseTest/testing_functions.db",
+         "output_path": "/home/ETL-PCP/data/testingData/output_testing_functions"
          }  # Parámetros específicos de la conexión a la base de datos
 
     ###############################################################################################################################################################

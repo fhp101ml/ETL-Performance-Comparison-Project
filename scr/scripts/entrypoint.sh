@@ -6,6 +6,13 @@
 ##dvc remote show minio_remlops
 #echo "modificada variable endpoint"
 
+echo "se va a crear la estructura de datos faltante"
+mkdir -p data/experimentResults
+mkdir -p data/experimentDatasets
+mkdir -p data/dataBaseTest
+mkdir -p data/testingData
+mkdir -p logs/cronLogs
+
 echo "Crontab contents:"
 cat /var/spool/cron/crontabs/cronsGesth
 

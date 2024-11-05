@@ -6,7 +6,7 @@ from scr.etl.utils.database.load_functions import SQLiteLoader
 
 def main():
 
-    db_path = '/home/ETL-PCP/data/sqlite_database/testing_SqliteLoader.db'
+    db_path = '/home/ETL-PCP/data/dataBaseTest/testing_SqliteLoader.db'
     table_name = 'usuarios'
 
     data = pd.DataFrame({

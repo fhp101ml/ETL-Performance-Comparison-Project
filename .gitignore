@@ -1,9 +1,13 @@
 *.csv
+*.hdf5
 **/__init__.py
 *.db
 .idea
 ./idea
-
+logs
+*.log
+*.idea
+*.xml
 # pyenv
 .python-version
 

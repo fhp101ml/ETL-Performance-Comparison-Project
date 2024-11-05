@@ -4,9 +4,9 @@ etl_project/
 │ └── config_exp.yaml
 │
 ├── data/
-│ │ └── /sqlite_database
-│ │ └── /experiment_dataset
-│ │ └── /testing_data
+│ │ └── /dataBaseTest
+│ │ └── /experimentDataset
+│ │ └── /testingData
 │
 ├── logs/
 │ └── (experiment results CSV files will be saved here)

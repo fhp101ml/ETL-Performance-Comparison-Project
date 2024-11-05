@@ -20,8 +20,8 @@ def generate_datasets(sizes, base_path):
 
 
 if __name__ == "__main__":
-    sizes = [25000, 50000, 100000, 200000, 400000, 800000, 1600000, 3200000]
-    # sizes = [25000, 50000, 75000, 150000]
-    base_path = r'/home/ETL-PCP/data/experiments_dataset'
+    # sizes = [25000, 50000, 100000, 200000, 400000, 800000, 1600000, 3200000]
+    sizes = [25000, 50000, 75000, 150000, 200000]
+    base_path = r'/home/ETL-PCP/data/experimentDatasets'
 
     generate_datasets(sizes, base_path)

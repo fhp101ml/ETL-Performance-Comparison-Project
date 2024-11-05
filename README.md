@@ -24,7 +24,7 @@ The framework leverages the following design patterns to enhance flexibility and
   - `config_exp.yaml`: Configuration file for the ETL process.
 - **data/**: Directory where experiment data files will be saved.
   - **experimentResults/**: Subdirectory for experiment results.
-  - **experiment_dataset/**: Subdirectory for experiment datasets.
+  - **experimentDataset/**: Subdirectory for experiment datasets.
 - **logs/**: Directory for log files.
   - **cronlogs/**: Subdirectory for cron job logs.
     - `(cron job logs will be saved here)`: Placeholder for cron job logs.
@@ -56,6 +56,11 @@ The framework leverages the following design patterns to enhance flexibility and
 - **projectStructure.txt**: Text file outlining the project structure.
 
 ## Running the project
+
+The system is ready to run under Docker. 
+
+After execute $docker-compose up --buid, enter into the terminal and play with the code
+
 After cloning the repository, create all the non existing directories like /logs and logs/cronlogs
 
 - Create database $python3 ~/scr/utils/sql_db_creation.py
