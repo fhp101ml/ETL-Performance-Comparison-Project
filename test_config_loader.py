@@ -5,7 +5,7 @@ import sys
 # Add src to path just in case we need imports
 sys.path.append(os.path.join(os.getcwd(), 'src'))
 
-from src.etl.utils.configuration.config_manager import ConfigManager
+from etl_framework.utils.configuration.config_manager import ConfigManager
 
 def test_config_loading(config_path):
     print(f"--- Testing Configuration Loading from: {config_path} ---\n")

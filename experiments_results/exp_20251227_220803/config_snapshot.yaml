@@ -2,9 +2,9 @@ etl:
   # MATRIX CONFIGURATION
   # For quick testing in Streamlit, we default to a smaller subset.
   # Uncomment options to run full benchmark.
-  libraries: [ 'pandas', 'polars', 'duckdb','dask' ] # Available: [ 'pandas', 'polars', 'duckdb', 'dask' ]
-  sources: [ 'csv' ] # Available: [ 'csv', 'parquet', 'json' ]
-  destinations: [ 'csv' ] # Available: [ 'csv', 'parquet', 'json' ]
+  libraries: [ 'pandas' ] # DEBUG ONLY
+  sources: [ 'csv' ] 
+  destinations: [ 'csv' ] 
   
   rows_limit: 1000 # Increase for stress testing (e.g., 100000)
 

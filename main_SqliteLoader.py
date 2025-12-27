@@ -1,7 +1,7 @@
 import pandas as pd
 import yaml
 
-from src.etl.utils.database.load_functions import SQLiteLoader
+from etl_framework.utils.database.load_functions import SQLiteLoader
 
 
 def main():

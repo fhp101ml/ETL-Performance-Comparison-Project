@@ -1,8 +1,8 @@
 import pandas as pd
 import yaml
 
-from src.etl.etl_factory_provider import ETLFactoryProvider
-from src.etl.utils.configuration.dataset_metadata import DatasetMetadata
+from etl_framework.etl_factory_provider import ETLFactoryProvider
+from etl_framework.utils.configuration.dataset_metadata import DatasetMetadata
 
 ################
 ## only testing function. Not config loaded with yaml config file

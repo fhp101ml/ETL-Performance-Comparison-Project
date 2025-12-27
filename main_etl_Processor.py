@@ -1,8 +1,8 @@
 import yaml
 import sys
-from src.etl.etl_factory_provider import ETLFactoryProvider
-from src.etl.etl_processor import ETLProcessor
-from src.etl.utils.configuration.dataset_metadata import DatasetMetadata
+from etl_framework.etl_factory_provider import ETLFactoryProvider
+from etl_framework.etl_processor import ETLProcessor
+from etl_framework.utils.configuration.dataset_metadata import DatasetMetadata
 
 def main():
 
