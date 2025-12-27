@@ -1,8 +1,8 @@
 pandas
 numpy<2
-vaex
+# vaex
 pymongo
-pymysqlite
+# pymysqlite
 mysql-connector-python
 sqlalchemy
 PyYAML
@@ -14,3 +14,10 @@ langdetect
 googletrans
 lingua-language-detector
 deep_translator
+polars
+duckdb
+dask[complete]
+pyarrow
+faker
+requests
+scikit-learn

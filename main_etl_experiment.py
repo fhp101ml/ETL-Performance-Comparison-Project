@@ -1,7 +1,7 @@
 
 
-from scr.etl.etl_experiment import ETLExperiment
-from scr.etl.utils.configuration.config_manager import ConfigManager
+from src.etl.etl_experiment import ETLExperiment
+from src.etl.utils.configuration.config_manager import ConfigManager
 import sys
 
 def main():

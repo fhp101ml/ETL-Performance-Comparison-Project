@@ -1,0 +1,36 @@
+etl:
+  libraries_to_test: [ 'pandas', 'polars', 'duckdb', 'dask' ]
+  source_type: csv
+  extractor_params:
+    file_path: '/home/fhp101ml/Documentos/Proyectos/Personales/ETLPerformanace/data_test/complex_input.csv'
+    separator: ';'
+  destination_type: file
+  loader_params:
+    output_path: '/home/fhp101ml/Documentos/Proyectos/Personales/ETLPerformanace/data_test/output_complex'
+  
+  # External References
+  external_data:
+    municipalities_path: '/home/fhp101ml/Documentos/Proyectos/Personales/ETLPerformanace/data_test/external/spanish_municipalities.csv'
+
+  transformations:
+    general: []
+    attributes:
+        name: [ 'capitalize_first_letter' ]
+        salary: [ 'impute_mean' ]
+        last_login: [ 'days_since' ]
+        # Geo distance calc requires two columns, usually done via general transform or specialized attribute rule
+        # For simplicity, we assume the transformer knows the context or target.
+
+metadata:
+  attributes: ['id', 'name', 'birth_date', 'email', 'zip_code', 'current_lat', 'current_lon', 'salary', 'category', 'last_login']
+  types:
+    id: int
+    name: str
+    salary: float
+    last_login: datetime
+    current_lat: float
+    current_lon: float
+  rules:
+    name: capitalize_first_letter
+    salary: impute_mean
+    last_login: days_since
