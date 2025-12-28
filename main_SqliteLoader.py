@@ -1,12 +1,21 @@
-import pandas as pd
-import yaml
+import os
+import sys
+
+# Add project root to path
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 from etl_framework.utils.database.load_functions import SQLiteLoader
 
 
 def main():
 
-    db_path = '/home/ETL-PCP/data/dataBaseTest/testing_SqliteLoader.db'
+    # Using a relative path for the test database
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    db_path = os.path.join(base_dir, 'data_test', 'testing_SqliteLoader.db')
+    
+    # Ensure directory exists
+    os.makedirs(os.path.dirname(db_path), exist_ok=True)
+    
     table_name = 'usuarios'
 
     data = pd.DataFrame({

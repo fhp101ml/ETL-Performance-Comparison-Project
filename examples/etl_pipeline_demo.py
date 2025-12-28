@@ -1,6 +1,9 @@
 import os
 import sys
 
+# Add project root to path for imports
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 # Importamos componentes de TI librería
 from etl_framework.etl_factory_provider import ETLFactoryProvider
 from etl_framework.etl_processor import ETLProcessor
@@ -33,7 +36,7 @@ class CustomerTransactionsMetadata:
 ENGINE = "polars" 
 
 # Rutas
-BASE_DIR = os.getcwd()
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SOURCE_FILE = os.path.join(BASE_DIR, "data_test", "complex_input.csv")
 OUTPUT_FILE = os.path.join(BASE_DIR, "data_test", "production_output.parquet")
 

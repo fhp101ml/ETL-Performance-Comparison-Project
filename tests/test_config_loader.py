@@ -2,8 +2,8 @@ import yaml
 import os
 import sys
 
-# Add src to path just in case we need imports
-sys.path.append(os.path.join(os.getcwd(), 'src'))
+# Add project root to path
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from etl_framework.utils.configuration.config_manager import ConfigManager
 

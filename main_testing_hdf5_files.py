@@ -1,7 +1,10 @@
 import vaex
 
+import os
+
 # Ruta del archivo HDF5 generado previamente
-file_path = '/home/ETL-PCP/data/experimentDatasets/experiment_data_25000_transformation_test.hdf5'
+base_dir = os.path.dirname(os.path.abspath(__file__))
+file_path = os.path.join(base_dir, 'data_test', 'experiment_data_25000_transformation_test.hdf5')
 
 
 try:

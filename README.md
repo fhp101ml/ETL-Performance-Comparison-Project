@@ -152,9 +152,9 @@ streamlit run dashboard.py
 │   └── utils/              # Monitoring & Helpers
 ├── dashboard.py            # Streamlit GUI App
 ├── benchmark_etl.py        # CLI Benchmarking Script
-├── etl_pipeline_demo.py    # Example Production Pipeline script
+├── examples/               # Usage Examples
+│   └── etl_pipeline_demo.py    
 ├── experiments_results/    # Folder for benchmark artifacts & logs
-├── setup.py                # Pip package configuration
 ├── setup.py                # Pip package configuration
 └── requirements.txt        # Dependencies
 ```

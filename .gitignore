@@ -30,3 +30,8 @@ env.bak/
 venv.bak/
 
 __pycache__/
+
+# Generated data
+data_test/matrix_output/
+data_test/production_output.parquet
+
