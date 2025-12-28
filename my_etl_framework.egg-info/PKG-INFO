@@ -1,0 +1,15 @@
+Metadata-Version: 2.4
+Name: my_etl_framework
+Version: 0.1.0
+Summary: Engine-agnostic ETL framework supporting Pandas, Polars, DuckDB, and Dask
+Author: Antigravity
+Requires-Dist: pandas
+Requires-Dist: polars
+Requires-Dist: duckdb
+Requires-Dist: dask[complete]
+Requires-Dist: pyarrow
+Requires-Dist: pyyaml
+Requires-Dist: faker
+Dynamic: author
+Dynamic: requires-dist
+Dynamic: summary

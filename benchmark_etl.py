@@ -4,12 +4,12 @@ import time
 import pandas as pd
 import sys
 
-# Add src to path
-sys.path.append(os.path.join(os.getcwd(), 'src'))
+# Add src to path if needed, but we are running as package structure now
+# sys.path.append(os.path.join(os.getcwd(), 'src'))
 
-from src.etl.etl_factory_provider import ETLFactoryProvider
-from src.etl.utils.configuration.dataset_metadata import DatasetMetadata
-from src.etl.utils.monitoring import PerformanceMonitor
+from etl_framework.etl_factory_provider import ETLFactoryProvider
+from etl_framework.utils.configuration.dataset_metadata import DatasetMetadata
+from etl_framework.utils.monitoring import PerformanceMonitor
 
 import csv
 from datetime import datetime
@@ -35,11 +35,11 @@ def create_dummy_data(path):
     df.to_csv(path, sep=';', index=False)
     print(f"Created dummy data at {path} with {len(df)} rows.")
 
-from src.etl.etl_processor import ETLProcessor
+from etl_framework.etl_processor import ETLProcessor
 
 # ...
 
-from src.etl.utils.configuration.config_manager import ConfigManager
+from etl_framework.utils.configuration.config_manager import ConfigManager
 
 # ...
 
@@ -104,7 +104,7 @@ def save_experiment_result(results_file, run_data, monitor):
     # Calculate totals
     total_duration = sum(m['duration_seconds'] for m in metrics.values())
     peak_memory = max(m['peak_memory_bytes'] for m in metrics.values()) if metrics else 0
-    
+    print(run_data.get('rows', 10000))
     row = {
         'timestamp': datetime.now().isoformat(),
         'library': run_data.get('library'),
@@ -154,7 +154,7 @@ def main():
     experiment_dir, results_csv_path, experiment_id = setup_experiment_workspace(base_dir, config_path)
     
     # Initialize Configuration
-    config_manager = ConfigManager(config_path)
+    config_manager = ConfigManager(config_path, manifest_path=os.path.join(base_dir, "config", "library_manifest.yaml"))
     
     # Create dummy data based on config path
     etl_config = config_manager.get_etl_config('etl')
@@ -169,16 +169,19 @@ def main():
         # We assume dataset generation happens or exists.
         # Ideally we should log the specific files used/generated.
         
-        from src.etl.utils.data_generator import generate_complex_dataset
-        from src.etl.utils.external_data_loader import download_spanish_municipalities
+        from etl_framework.utils.data_generator import generate_complex_dataset
+        from etl_framework.utils.external_data_loader import download_spanish_municipalities
         
         ext_path = etl_config.get('external_data', {}).get('municipalities_path')
         if ext_path:
             download_spanish_municipalities(ext_path)
             used_datasets.append({'type': 'external', 'path': ext_path})
             
-        generate_complex_dataset(base_input, num_rows=10000)
-        used_datasets.append({'type': 'main_input_base', 'path': base_input})
+        # Configurable rows
+        num_rows = etl_config.get('rows_limit', 1000)
+        print(num_rows)
+        generate_complex_dataset(base_input, num_rows=num_rows)
+        used_datasets.append({'type': 'main_input_base', 'path': base_input, 'rows': num_rows})
         
     elif 'extractor_params' in etl_config:
          input_file = etl_config['extractor_params']['file_path']
@@ -243,7 +246,7 @@ def main():
                             'library': lib,
                             'source_type': src,
                             'destination_type': dst,
-                            'rows': 10000 # Should ideally come from config or detected
+                            'rows': num_rows # Should ideally come from config or detected
                         }
                         save_experiment_result(results_csv_path, run_meta, processor_monitor)
                         

@@ -21,3 +21,13 @@ pyarrow
 faker
 requests
 scikit-learn
+streamlit
+plotly
+langchain
+langchain-google-genai
+tabulate
+python-dotenv
+kaleido
+matplotlib
+seaborn
+statsmodels

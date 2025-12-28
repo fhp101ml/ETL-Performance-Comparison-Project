@@ -1,0 +1,7 @@
+README.md
+setup.py
+my_etl_framework.egg-info/PKG-INFO
+my_etl_framework.egg-info/SOURCES.txt
+my_etl_framework.egg-info/dependency_links.txt
+my_etl_framework.egg-info/requires.txt
+my_etl_framework.egg-info/top_level.txt

@@ -1,4 +1,6 @@
 *.csv
+!experiments_results/**/*.csv
+!global_analysis/**/*.csv
 *.hdf5
 **/__init__.py
 *.db
@@ -28,3 +30,8 @@ env.bak/
 venv.bak/
 
 __pycache__/
+
+# Generated data
+data_test/matrix_output/
+data_test/production_output.parquet
+

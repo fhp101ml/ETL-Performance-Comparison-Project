@@ -1,188 +1,228 @@
-# ETL-Performance-Comparison-Project
-# ETL Project
-This project is an ETL (Extract, Transform, Load) framework designed to facilitate data extraction, transformation, and loading processes using multiple libraries, specifically **Pandas, Polars, DuckDB, Dask, and Vaex**. The framework is built to support flexibility and extensibility, incorporating several design patterns to improve modularity and scalability. Additionally, it includes functionality for performance measurement, allowing users to monitor the execution time and resource usage for each ETL operation.
+# ETL Performance & Design Patterns Research
 
-Key Features
+> **🎯 Project Purpose**
+>
+> This repository aims to **establish an experimental foundation** for benchmarking various data processing libraries and investigating **Design Patterns** applied to ETL processes within the **KDD (Knowledge Discovery in Databases)** framework.
+>
+> **⚠️ Note on Scope**: The `my_etl_framework` included here serves primarily as a base to demonstrate **how to create, structure, and deploy Python libraries**. Developing a truly engine-agnostic ETL library that intelligently selects the best processor for every workload involves significant complexity, time, and architectural reflection. Consider this project a **Proof of Concept (PoC)** that could serve as the seed for a specific, dedicated project in the future.
 
-* *Data Extraction*: Allows data retrieval from various sources, such as CSV files, databases, and APIs.
-* *Data Transformation*: Provides multiple transformation strategies to clean, normalize, and preprocess data according to specific requirements.
-* *Data Loading*: Supports saving processed data to different destinations, including databases and files.
-* *Performance Measurement*: Tracks and logs the performance of each ETL step (CPU, Memory, Time), facilitating optimization of data workflows.
-* *Benchmarking*: Tooling to compare performance across different libraries.
+---
 
-Design Patterns Used
+## 🚀 Technical Implementation: Multi-Engine ETL Framework
 
-The framework leverages the following design patterns to enhance flexibility and maintainability:
+From a technical perspective, this project implements an **Engine-Agnostic ETL Framework** that allows users to define data transformations once and execute them using multiple high-performance data libraries: **Pandas, Polars, DuckDB, and Dask**.
 
-* *Abstract Factory*: Enables the creation of library-specific ETL components (e.g., Extractor, Transformer, Loader) without tying the code to a particular implementation. This supports switching between Pandas, Polars, DuckDB, Dask, and Vaex seamlessly.
-* *Singleton*: Used in logging and configuration management.
-* *Strategy*: Allows different transformation strategies to be applied to the data, making it easy to switch or add new transformation methods based on the requirements.
-* *Template Method*: Defines the skeleton of ETL operations in abstract base classes.
+---
 
-## Architectural Critical Analysis (Status 2025)
+## 🚀 Key Features
 
-This section documents the evolution and critique of the design patterns implemented in this project to handle modern ETL requirements.
+*   **Engine Agnostic**: Switch between `pandas`, `polars`, `duckdb`, or `dask` by changing a single config string.
+*   **Format Flexibility**: Full support for **CSV, Parquet, and JSON** inputs/outputs effectively across all engines.
+*   **Business Logic decoupling**: Define *what* to do (Metadata/Rules) separate from *how* to do it (Implementation).
+*   **Performance Benchmarking**: Includes a full suite to stress-test your data pipeline against different engines.
+*   **Observability**: Built-in performance monitoring (Time & Memory).
 
-### 1. Abstract Factory
-- **Status**: ✅ **Effective and Necessary**.
-- **Analysis**: Essential for decoupling the business logic (`ETLProcessor`) from specific implementations (Pandas, Polars, DuckDB). It allows adding new libraries without modifying the core processor logic. It is the core strength of this architecture.
+---
 
-### 2. Singleton (PerformanceMonitor)
-- **Status**: ⚠️ **Refactored to Dependency Injection**.
-- **Critique & Evolution**: Initially, `PerformanceMonitor` was implemented as a Singleton. This proved to be an **anti-pattern** for this specific use case because:
-  - It prevented parallel execution of benchmarks (global state would mix metrics from different threads/processes).
-  - It complicated testing by requiring manual state resets (`reset_metrics`).
-- **Improvement**: We successfully refactored this to use **Dependency Injection**. The monitor is now instantiated at the top level and injected into the operations, ensuring isolation and better testability.
+## 📦 Installation
 
-### 3. Strategy Pattern (Transformers)
-- **Status**: ⚠️ **Functional but needs Optimization for Lazy Execution**.
-- **Critique**: Implementing every small transformation (e.g., `CapitalizeName`) as a separate class creates significant boilerplate ("Class Explosion"). More critically, strictly applying transformations one-by-one (`transform(data)`) interferes with **Lazy Execution** engines like Dask, Polars, and Vaex. These engines prefer to build a complete query plan rather than executing intermediate steps.
-- **Future Improvment**:
-  - **Functional Registry/Pipeline**: Move from Class-based Strategy to a functional pipeline approach.
-  - **Composite Pattern**: Allow bundling multiple operations into a single "Lazy" plan that is executed only at the `Load` specific step.
-  - This refactoring is planned for the next iteration to fully unlock the performance of lazy evaluation engines.
+This framework is packaged as a standard Python library.
 
-### 4. Translation Service (Optional Component)
-- **Status**: ⏸️ **Inactive in Benchmarks**.
-- **Purpose**: Provides semantic normalization of column names (e.g., detecting `fecha_nacimiento` is Spanish and renaming it to `birth_date`) using external APIs (DeepL, Google Translate).
-- **Analysis**: While useful for raw data ingestion, this component is **excluded from standard performance benchmarks**.
-- **Reason**: It relies on external network latency (API calls), which introduces significant variability and bottlenecks unrelated to data processing performance. Including it would distort the comparison between libraries like Polars and DuckDB. Currently, clear integration is maintained primarily in the Pandas path.
+### 1. Requirements
+*   Python 3.10+
+*   Virtual Environment (recommended)
 
-## Project structure 
+### 2. Install
+```bash
+# Create venv
+python -m venv .venv
+source .venv/bin/activate
 
-## Description of Directories and Files 
+# Install dependencies (Streamlit, Plotly, etc.)
+pip install -r requirements.txt
 
-- **config/**: Contains configuration files for the ETL process.
-  - `config_exp.yaml`: Configuration file for the ETL process.
-- **data/**: Directory where experiment data files will be saved.
-- **logs/**: Directory for log files.
-- **src/**: Source code directory.
-  - `__init__.py`: Makes the `src` directory a package.
-  - **etl/**: Subdirectory for ETL-related code.
-    - `etl_factory_provider.py`: Provides the appropriate ETL factory based on the library type.
-    - `etl_processor.py`: Handles the ETL process with performance monitoring.
-    - **library_pandas/**: Pandas implementation.
-    - **library_polars/**: Polars implementation.
-    - **library_duckdb/**: DuckDB implementation.
-    - **library_dask/**: Dask implementation.
-    - **library_vaex/**: Vaex implementation.
-    - **utils/**: Utilities including monitoring and databases.
-  - **experiments/**: Subdirectory for experiment-related code.
-  - **scripts/**: Subdirectory for script files.
-- **.gitignore**: Specifies intentionally untracked files to ignore.
-- **docker-compose.yml**: Configuration file for Docker Compose.
-- **Dockerfile-python**: Dockerfile.
-- **README.md**: This file.
-- **benchmark_etl.py**: Script to run performance benchmarks across libraries.
+# Install the library in editable mode
+pip install -e .
+```
 
-## Running the project
+---
 
-The system is ready to run under Docker or in a local virtual environment.
+## 🛠️ Usage (Library)
 
-### Using Virtual Environment (Recommended)
+You can use `my_etl_framework` in any Python script or Airflow DAG.
 
-1. Create and activate virtual environment:
-   ```bash
-   python3 -m venv .venv
-   source .venv/bin/activate
-   ```
-2. Install dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
-3. Run benchmarks:
-   ```bash
-   python benchmark_etl.py
-   ```
+```python
+from etl_framework.etl_factory_provider import ETLFactoryProvider
+from etl_framework.etl_processor import ETLProcessor
+from etl_framework.utils.monitoring import PerformanceMonitor
 
-### Using Docker
+# 1. Define Business Rules (Data Contract)
+class CustomerTransactionsLogic:
+    """
+    Defines the Schema and Business Rules for the dataset.
+    This acts as a 'Source of Truth', decoupled from the execution engine.
+    """
+    def get_attributes(self):
+        """Defines the expected column schema"""
+        return [
+            'transaction_id', 
+            'customer_name', 
+            'transaction_date', 
+            'amount', 
+            'category'
+        ]
 
-After execute `$ docker-compose up --build`, enter into the terminal and play with the code.
+    def get_types(self):
+        """Defines strict data types for validation/casting"""
+        return {
+            'transaction_id': int,
+            'customer_name': str,
+            'transaction_date': 'datetime',
+            'amount': float,
+            'category': str
+        }
 
-## Step-by-Step System Execution Flow
+    def get_rules(self):
+        """
+        Maps attributes to specific transformation strategies.
+        These abstract names (e.g., 'impute_mean') are implemented 
+        optimizedly in each specific library (Pandas, Polars, etc).
+        """
+        return {
+            'customer_name': 'capitalize_first_letter',  # Standardization
+            'amount': 'impute_mean',                     # Data Cleaning
+            'transaction_date': 'days_since',            # Feature Engineering
+            'category': 'fill_unknown'                   # Handling Missing Data
+        }
 
-This section details how the system works internally during a benchmark execution (`benchmark_etl.py`), explaining the data flow and architectural components involved.
+# 2. Select Engine ('polars', 'duckdb', 'pandas', 'dask')
+ENGINE = 'polars'
 
-### 1. Initialization & Configuration
-- **Script Entry**: `benchmark_etl.py` is the entry point.
-- **Data Generation**: The `create_dummy_data()` function generates a synthetic CSV (`input.csv`) with 4000 rows to ensure a consistent baseline for all libraries.
-- **Metadata Loading**: A `MockMetadata` object is created. In a production scenario, this would load rules from `config_exp.yaml` (e.g., *'age': 'calculate_age'*).
+# 3. Instantiate Factory & Processor with the Business Logic
+metadata = CustomerTransactionsLogic()
+factory = ETLFactoryProvider.get_factory(ENGINE, metadata)
+processor = ETLProcessor(factory, ENGINE, monitor=PerformanceMonitor())
 
-### 2. Dependency Injection & Factory Selection
-- **Library Loop**: The script iterates through the configured libraries: `['pandas', 'polars', 'duckdb', 'dask']`.
-- **Factory Provider**: `ETLFactoryProvider.get_factory(library, metadata)` is called.
-  - *Magic happens here*: If `library='polars'`, it returns an instance of `PolarsETLFactory`. This abstracts all subsequent operations; the system now uses Polars without explicitly knowing it.
-- **Monitor Injection**: A `PerformanceMonitor` instance is created and injected into the `ETLProcessor`. This ensures that metrics for this specific run are isolated.
+# 4. Run Pipeline with specific Execution Parameters
+processor.process(
+    source_type='csv',
+    extractor_params={'file_path': 'data/input_transactions.csv', 'separator': ';'},
+    destination_type='parquet',
+    loader_params={'output_path': 'data/processed_transactions.parquet'},
+    
+    # We apply the rules defined in our Metadata contract
+    transformations={
+        'attributes': {
+            'customer_name': ['capitalize_first_letter'],
+            'amount': ['impute_mean'],
+            'transaction_date': ['days_since']
+        }
+    }
+)
+```
 
-### 3. The ETL Pipeline Execution
-The `processor.process()` method is called, orchestrating the following steps:
+---
 
-#### A. Extraction (Setup & Read)
-- **Timer Start**: `monitor.measure_time("extraction")` starts tracking.
-- **Abstraction**: `factory.get_extractor("csv", ...)` returns a library-specific extractor (e.g., `PolarsCSVExtractor`).
-- **Execution**: `extractor.extract()` reads the `input.csv`.
-  - *Pandas*: Reads the file into memory immediately.
-  - *Vaex/Dask*: May lazy-load (map) the file without full reading.
+## 📊 Benchmarking Dashboard
 
-#### B. Transformation (Strategy Pattern)
-- **Factory**: The processor asks for `factory.get_transformer_factory()`.
-- **Strategy Selection**: The system iterates through the defined transformation rules (e.g., `'simple'`, `'remove_duplicates'`).
-- **Execution**: `transformer.transform(data)` is called for each rule.
-  - *Polars/DuckDB*: These libraries execute optimized query plans or SQL-like expressions.
-  - *Critique*: Currently, this step applies transformations sequentially.
+This repository includes a powerful Streamlit Dashboard to compare engine performance.
 
-#### C. Loading (IO Write)
-- **Timer Start**: `monitor.measure_time("loading")` starts.
-- **Abstraction**: `factory.get_loader("file", ...)` creates the specific loader (e.g., `DuckDBFileLoader`).
-- **Execution**: `loader.load(data)` writes the final processed data to disk (`output_*.csv`).
+### Running the Dashboard
+```bash
+streamlit run dashboard.py
+```
 
-### 4. Reporting
-- Once the pipeline finishes, `processor_monitor.print_report()` calculates and outputs:
-  - **Duration**: Time taken for each step.
-  - **Memory Delta**: RAM consumption difference.
-  - **Peak Memory**: Maximum RAM usage detected.
+### Features
+1.  **Configuration**: GUI to select Libraries, Input/Output formats, and Data Size.
+2.  **Execution**: Runs real benchmarks in the background.
+3.  **Analysis**:
+    *   Compare **Execution Time** vs **Memory Usage**.
+    *   Analyze breakdown by phase (Setup, Extract, Transform, Load).
+    *   **Save Reports**: Export interactive HTML charts of your results.
 
-## Configuration Guide (`benchmark_config.yaml`)
+---
 
-The configuration file is the control plane of the experiment. It allows you to modify the behavior without touching Python code.
+## 📂 Project Structure
 
-### 1. The `etl` Section (Process Logic)
-Defines **HOW** the data is processed in the current run.
+```
+├── my_etl_framework/       # Core Library (Main Package)
+│   ├── etl_factory_provider.py
+│   ├── etl_processor.py
+│   ├── library_*/          # Engine implementations (Strategies)
+│   └── utils/              # Monitoring & Helpers
+├── dashboard.py            # Streamlit GUI App
+├── benchmark_etl.py        # CLI Benchmarking Script
+├── examples/               # Usage Examples
+│   └── etl_pipeline_demo.py    
+├── experiments_results/    # Folder for benchmark artifacts & logs
+├── setup.py                # Pip package configuration
+└── requirements.txt        # Dependencies
+```
+
+## ⚙️ Configuration Architecture
+
+The framework uses a decoupled configuration approach to separate **Infrastructure** from **Data Definitions**.
+
+### 1. Library Capabilities (`config/library_manifest.yaml`)
+Acts as a static catalog of what the framework *can* do. Useful for UI tools and validations.
+
+> **⚠️ MAINTENANCE NOTE**: This file is the source of truth for the library's capabilities. **It must be updated** whenever a new version is released, a new engine is supported, or a new transformation function is implemented in the code.
+
+```yaml
+capabilities:
+  supported_engines: [pandas, polars, duckdb, dask]
+  transformation_catalog:
+    - name: "impute_mean"
+      type: "Numeric -> Numeric"
+      description: "Fills missing values with mean."
+```
+
+### 2. Experiment & Data Contract (`config/experiment_matrix.yaml`)
+Defines the runtime parameters and the specific schema of your dataset.
+
+**A. ETL Experiment (Runtime)**
 ```yaml
 etl:
-  # List of libraries to benchmark sequentially. 
-  # You can remove items to test specific libraries only (e.g., just ['polars'])
-  libraries_to_test: [ 'pandas', 'polars', 'duckdb', 'dask' ] 
-  
-  source_type: csv
-  # ... paths and params ...
-  
-  # Explicit transformations to apply in THIS experiment run
+  libraries: [ 'polars', 'duckdb' ]
+  rows_limit: 100000
   transformations:
-    general: [ 'simple', 'remove_duplicates' ]
     attributes:
-        price: [ 'apply_discount' ]
+        price: [ 'impute_mean' ] # References a function from the Manifest
 ```
 
-### 2. The `metadata` Section (Data Contract)
-Defines **WHAT** the data represents and its business invariants. Decouples business rules from technical execution.
+**B. Dataset Metadata (Source of Truth)**
 ```yaml
 metadata:
-  attributes: ['name', 'age', 'price']
+  attributes: ['transaction_id', 'price']
   types:
-    age: int # Data type validation
+    price: float
   rules:
-    # Default business rule associated with this attribute.
-    # The ETL system can use this if no explicit transformations are provided.
-    age: calculate_age 
+    price: impute_mean
 ```
 
-## Testing the ETL process
+## 🏗️ Design Patterns
 
-Run `python benchmark_etl.py` to verify all libraries and satisfy the benchmarking requirement.
+*   **Abstract Factory**: Decouples the client from specific ETL implementations (e.g., `PolarsETLFactory`).
+*   **Strategy**: Encapsulates transformation algorithms (`PandasImputeMeanTransformer`, `DuckDBImputeMeanTransformer`).
+*   **Dependency Injection**: Injects Metadata and Monitors into the processor for better testing and isolation.
 
-## Next developments
 
-- **pytest integration**
-- **MinIO Connection**
-- **Enhanced Visualizations for Benchmarks**
+<!-- START_GLOBAL_RESULTS -->
+## 📊 Latest Results (2025-12-28)
+![Chart](global_analysis/latest_benchmark_chart.png)
+### AI Summary
+As a Principal Data Architect, I've thoroughly analyzed the provided ETL benchmark data across different libraries (Dask, DuckDB, Pandas, Polars) and data sources (CSV, Parquet) for varying file sizes. This report summarizes the key findings and provides strategic recommendations for your data architecture decisions.
+
+---
+
+## ETL Benchmark Analysis: Executive Report
+
+### 1. 🚀 Executive Summary
+
+The clear winner in this benchmark, demonstrating superior overall performance across both speed and efficiency for in-memory processing, is **Polars**. It consistently delivered the fastest execution times, particularly with Parquet data.
+
+**Main Insights:**
+*   **Polars Dominance**: Polars is the top performer for speed, making it an excellent choice for modern, high-performance ETL workloads.
+*  ...
+[Full Report](global_analysis/report_2025-12-28.md)
+<!-- END_GLOBAL_RESULTS -->

@@ -1,0 +1,7 @@
+pandas
+polars
+duckdb
+dask[complete]
+pyarrow
+pyyaml
+faker
