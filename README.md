@@ -139,6 +139,10 @@ streamlit run dashboard.py
     *   Compare **Execution Time** vs **Memory Usage**.
     *   Analyze breakdown by phase (Setup, Extract, Transform, Load).
     *   **Save Reports**: Export interactive HTML charts of your results.
+4.  **🤖 Generative AI Analysis**:
+    *   Uses **Google Gemini 2.5 Flash** (via LangChain) to analyze benchmark data.
+    *   Automatically generates an **Executive Report** summarizing "Winners", "Scalability", and "Recommendations".
+    *   Updates this `README.md` file dynamically with the latest insights.
 
 ---
 
