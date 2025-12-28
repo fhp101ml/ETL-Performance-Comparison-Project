@@ -1,0 +1,50 @@
+etl:
+  libraries:
+  - pandas
+  - polars
+  - duckdb
+  - dask
+  sources:
+  - csv
+  destinations:
+  - csv
+  rows_limit: 150000
+  base_input_path: /home/fhp101ml/Documentos/Proyectos/Personales/ETLPerformanace/data_test/complex_input
+  output_base_dir: /home/fhp101ml/Documentos/Proyectos/Personales/ETLPerformanace/data_test/matrix_output
+  extractor_options:
+    csv:
+      separator: ;
+    json: {}
+    parquet: {}
+  external_data:
+    municipalities_path: /home/fhp101ml/Documentos/Proyectos/Personales/ETLPerformanace/data_test/external/spanish_municipalities.csv
+  transformations:
+    general: []
+    attributes:
+      name:
+      - capitalize_first_letter
+      salary:
+      - impute_mean
+      last_login:
+      - days_since
+metadata:
+  attributes:
+  - id
+  - name
+  - birth_date
+  - email
+  - zip_code
+  - current_lat
+  - current_lon
+  - salary
+  - category
+  - last_login
+  types:
+    id: int
+    name: str
+    salary: float
+    last_login: datetime
+  rules:
+    name: capitalize_first_letter
+    salary: impute_mean
+    last_login: days_since

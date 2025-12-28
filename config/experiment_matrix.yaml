@@ -1,38 +1,46 @@
 etl:
-  # MATRIX CONFIGURATION
-  # For quick testing in Streamlit, we default to a smaller subset.
-  # Uncomment options to run full benchmark.
-  libraries: [ 'pandas', 'polars', 'duckdb','dask' ] # Available: [ 'pandas', 'polars', 'duckdb', 'dask' ]
-  sources: [ 'csv' ] # Available: [ 'csv', 'parquet', 'json' ]
-  destinations: [ 'csv' ] # Available: [ 'csv', 'parquet', 'json' ]
-  
-  rows_limit: 1000 # Increase for stress testing (e.g., 100000)
-
-  # BASE PATHS
-  base_input_path: '/home/fhp101ml/Documentos/Proyectos/Personales/ETLPerformanace/data_test/complex_input' 
-  output_base_dir: '/home/fhp101ml/Documentos/Proyectos/Personales/ETLPerformanace/data_test/matrix_output'
-
-  # EXTRACTOR CONFIG (Applied dynamically based on current source)
+  libraries:
+  - pandas
+  - polars
+  - duckdb
+  - dask
+  sources:
+  - csv
+  - parquet
+  destinations:
+  - csv
+  - parquet
+  rows_limit: 10000
+  base_input_path: /home/fhp101ml/Documentos/Proyectos/Personales/ETLPerformanace/data_test/complex_input
+  output_base_dir: /home/fhp101ml/Documentos/Proyectos/Personales/ETLPerformanace/data_test/matrix_output
   extractor_options:
     csv:
-      separator: ';'
+      separator: ;
     json: {}
     parquet: {}
-
-  # EXTERNAL DATA
   external_data:
-    municipalities_path: '/home/fhp101ml/Documentos/Proyectos/Personales/ETLPerformanace/data_test/external/spanish_municipalities.csv'
-
-  # TRANSFORMATIONS (Applied to all)
+    municipalities_path: /home/fhp101ml/Documentos/Proyectos/Personales/ETLPerformanace/data_test/external/spanish_municipalities.csv
   transformations:
     general: []
     attributes:
-        name: [ 'capitalize_first_letter' ]
-        salary: [ 'impute_mean' ]
-        last_login: [ 'days_since' ]
-
+      name:
+      - capitalize_first_letter
+      salary:
+      - impute_mean
+      last_login:
+      - days_since
 metadata:
-  attributes: ['id', 'name', 'birth_date', 'email', 'zip_code', 'current_lat', 'current_lon', 'salary', 'category', 'last_login']
+  attributes:
+  - id
+  - name
+  - birth_date
+  - email
+  - zip_code
+  - current_lat
+  - current_lon
+  - salary
+  - category
+  - last_login
   types:
     id: int
     name: str

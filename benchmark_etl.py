@@ -104,7 +104,7 @@ def save_experiment_result(results_file, run_data, monitor):
     # Calculate totals
     total_duration = sum(m['duration_seconds'] for m in metrics.values())
     peak_memory = max(m['peak_memory_bytes'] for m in metrics.values()) if metrics else 0
-    
+    print(run_data.get('rows', 10000))
     row = {
         'timestamp': datetime.now().isoformat(),
         'library': run_data.get('library'),
@@ -154,7 +154,7 @@ def main():
     experiment_dir, results_csv_path, experiment_id = setup_experiment_workspace(base_dir, config_path)
     
     # Initialize Configuration
-    config_manager = ConfigManager(config_path)
+    config_manager = ConfigManager(config_path, manifest_path=os.path.join(base_dir, "config", "library_manifest.yaml"))
     
     # Create dummy data based on config path
     etl_config = config_manager.get_etl_config('etl')
@@ -179,7 +179,7 @@ def main():
             
         # Configurable rows
         num_rows = etl_config.get('rows_limit', 1000)
-        
+        print(num_rows)
         generate_complex_dataset(base_input, num_rows=num_rows)
         used_datasets.append({'type': 'main_input_base', 'path': base_input, 'rows': num_rows})
         
@@ -246,7 +246,7 @@ def main():
                             'library': lib,
                             'source_type': src,
                             'destination_type': dst,
-                            'rows': 10000 # Should ideally come from config or detected
+                            'rows': num_rows # Should ideally come from config or detected
                         }
                         save_experiment_result(results_csv_path, run_meta, processor_monitor)
                         

@@ -1,0 +1,38 @@
+library_info:
+  name: "my_etl_framework"
+  version: "0.1.0"
+  description: "Engine-agnostic ETL library supporting Pandas, Polars, DuckDB, and Dask."
+  maintainer: "Antigravity"
+
+capabilities:
+  supported_engines:
+    - pandas
+    - polars
+    - duckdb
+    - dask
+
+  transformation_catalog:
+    - name: "capitalize_first_letter"
+      type: "String -> String"
+      category: "Cleaning"
+      description: "Capitalizes the first letter of a string attribute."
+      
+    - name: "impute_mean"
+      type: "Numeric -> Numeric"
+      category: "Imputation"
+      description: "Fills missing values with the mean of the column."
+      
+    - name: "days_since"
+      type: "Datetime -> Int"
+      category: "Feature Engineering"
+      description: "Calculates the number of days elapsed since the date value to today."
+
+    - name: "calculate_age"
+      type: "Int -> Int"
+      category: "Calculation"
+      description: "Calculates age from a year of birth."
+
+  io_formats:
+    - csv
+    - parquet
+    - json

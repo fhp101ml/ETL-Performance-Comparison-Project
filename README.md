@@ -1,8 +1,16 @@
-# Multi-Engine ETL Framework
+# ETL Performance & Design Patterns Research
 
-This project creates a **Engine-Agnostic ETL Framework**, allowing users to define data transformations once and execute them using multiple high-performance data libraries: **Pandas, Polars, DuckDB, and Dask**.
+> **🎯 Project Purpose**
+>
+> This repository aims to **establish an experimental foundation** for benchmarking various data processing libraries and investigating **Design Patterns** applied to ETL processes within the **KDD (Knowledge Discovery in Databases)** framework.
+>
+> **⚠️ Note on Scope**: The `my_etl_framework` included here serves primarily as a base to demonstrate **how to create, structure, and deploy Python libraries**. Developing a truly engine-agnostic ETL library that intelligently selects the best processor for every workload involves significant complexity, time, and architectural reflection. Consider this project a **Proof of Concept (PoC)** that could serve as the seed for a specific, dedicated project in the future.
 
-It abstracts the specific implementation details (Extract, Transform, Load) using design patterns like **Abstract Factory** and **Strategy**, making it trivial to switch engines based on data volume or environment.
+---
+
+## 🚀 Technical Implementation: Multi-Engine ETL Framework
+
+From a technical perspective, this project implements an **Engine-Agnostic ETL Framework** that allows users to define data transformations once and execute them using multiple high-performance data libraries: **Pandas, Polars, DuckDB, and Dask**.
 
 ---
 
@@ -147,7 +155,49 @@ streamlit run dashboard.py
 ├── etl_pipeline_demo.py    # Example Production Pipeline script
 ├── experiments_results/    # Folder for benchmark artifacts & logs
 ├── setup.py                # Pip package configuration
+├── setup.py                # Pip package configuration
 └── requirements.txt        # Dependencies
+```
+
+## ⚙️ Configuration Architecture
+
+The framework uses a decoupled configuration approach to separate **Infrastructure** from **Data Definitions**.
+
+### 1. Library Capabilities (`config/library_manifest.yaml`)
+Acts as a static catalog of what the framework *can* do. Useful for UI tools and validations.
+
+> **⚠️ MAINTENANCE NOTE**: This file is the source of truth for the library's capabilities. **It must be updated** whenever a new version is released, a new engine is supported, or a new transformation function is implemented in the code.
+
+```yaml
+capabilities:
+  supported_engines: [pandas, polars, duckdb, dask]
+  transformation_catalog:
+    - name: "impute_mean"
+      type: "Numeric -> Numeric"
+      description: "Fills missing values with mean."
+```
+
+### 2. Experiment & Data Contract (`config/experiment_matrix.yaml`)
+Defines the runtime parameters and the specific schema of your dataset.
+
+**A. ETL Experiment (Runtime)**
+```yaml
+etl:
+  libraries: [ 'polars', 'duckdb' ]
+  rows_limit: 100000
+  transformations:
+    attributes:
+        price: [ 'impute_mean' ] # References a function from the Manifest
+```
+
+**B. Dataset Metadata (Source of Truth)**
+```yaml
+metadata:
+  attributes: ['transaction_id', 'price']
+  types:
+    price: float
+  rules:
+    price: impute_mean
 ```
 
 ## 🏗️ Design Patterns
@@ -155,3 +205,24 @@ streamlit run dashboard.py
 *   **Abstract Factory**: Decouples the client from specific ETL implementations (e.g., `PolarsETLFactory`).
 *   **Strategy**: Encapsulates transformation algorithms (`PandasImputeMeanTransformer`, `DuckDBImputeMeanTransformer`).
 *   **Dependency Injection**: Injects Metadata and Monitors into the processor for better testing and isolation.
+
+
+<!-- START_GLOBAL_RESULTS -->
+## 📊 Latest Results (2025-12-28)
+![Chart](global_analysis/latest_benchmark_chart.png)
+### AI Summary
+As a Principal Data Architect, I've thoroughly analyzed the provided ETL benchmark data across different libraries (Dask, DuckDB, Pandas, Polars) and data sources (CSV, Parquet) for varying file sizes. This report summarizes the key findings and provides strategic recommendations for your data architecture decisions.
+
+---
+
+## ETL Benchmark Analysis: Executive Report
+
+### 1. 🚀 Executive Summary
+
+The clear winner in this benchmark, demonstrating superior overall performance across both speed and efficiency for in-memory processing, is **Polars**. It consistently delivered the fastest execution times, particularly with Parquet data.
+
+**Main Insights:**
+*   **Polars Dominance**: Polars is the top performer for speed, making it an excellent choice for modern, high-performance ETL workloads.
+*  ...
+[Full Report](global_analysis/report_2025-12-28.md)
+<!-- END_GLOBAL_RESULTS -->

@@ -12,6 +12,15 @@ class CustomerTransactionsMetadata:
     def get_attributes(self):
         return ['id', 'name', 'email', 'salary', 'last_login']
     
+    def get_types(self):
+        return {
+            'id': int,
+            'name': str,
+            'email': str,
+            'salary': float,
+            'last_login': 'datetime'
+        }
+    
     def get_rules(self):
         return {
             'name': 'capitalize_first_letter',

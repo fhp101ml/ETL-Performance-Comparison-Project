@@ -1,4 +1,6 @@
 *.csv
+!experiments_results/**/*.csv
+!global_analysis/**/*.csv
 *.hdf5
 **/__init__.py
 *.db

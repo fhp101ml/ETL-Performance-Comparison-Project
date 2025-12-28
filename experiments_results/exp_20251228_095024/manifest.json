@@ -1,0 +1,15 @@
+{
+    "experiment_id": "exp_20251228_095024",
+    "timestamp": "2025-12-28T09:50:27.065559",
+    "datasets": [
+        {
+            "type": "external",
+            "path": "/home/fhp101ml/Documentos/Proyectos/Personales/ETLPerformanace/data_test/external/spanish_municipalities.csv"
+        },
+        {
+            "type": "main_input_base",
+            "path": "/home/fhp101ml/Documentos/Proyectos/Personales/ETLPerformanace/data_test/complex_input.csv",
+            "rows": 50000
+        }
+    ]
+}
